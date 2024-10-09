@@ -1,5 +1,7 @@
 package com.WorkDB;
 
+import lombok.SneakyThrows;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,6 +34,26 @@ public class Repository {
         pr.execute();
 
 
+    }
+    public List<Picture> getPictures() throws SQLException {
+        List<Picture> pictureList = new ArrayList<>();
+        PreparedStatement ps = Connect.SQLConnection("SELECT * FROM pictures WHERE url IS NULL");
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            Picture picture = new Picture();
+            picture.setId(rs.getInt("id"));
+            picture.setPicture(rs.getBytes("picture"));
+            pictureList.add(picture);
+
+        }
+        return pictureList;
+    }
+    @SneakyThrows
+    public void setPictureUrl(String url, int id){
+        PreparedStatement ps = Connect.SQLConnection("UPDATE pictures SET picture = '', url = ? WHERE id = ? ");
+        ps.setString(1, url);
+        ps.setInt(2, id);
+        ps.execute();
     }
 
 }

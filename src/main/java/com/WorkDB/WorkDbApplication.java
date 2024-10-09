@@ -16,20 +16,27 @@ public class WorkDbApplication {
 	//public static final CopyOnWriteArrayList<Email> completedTasks = new CopyOnWriteArrayList<>();
 	public static final List<Email> completedTasks = new ArrayList<>();
 	public static final ReentrantLock lockEmailThread = new ReentrantLock();
-	public static Condition lockCondition = lockEmailThread.newCondition();
+	public static final List<Picture> completedPictures = new ArrayList<>();
 
 
 	public static void main(String[] args) throws InterruptedException {
 
-		Thread thread = new Thread(new EmailThread());
-		thread.start();
-		Thread thread2 = new Thread(new EmailThread());
-		thread2.start();
-		Thread thread3 = new Thread(new EmailThread());
-		thread3.start();
-		Thread thread4 = new Thread(new EmailThread());
-		thread4.start();
+		EmailThread emailThread = new EmailThread();
 
+		Thread thread = new Thread(emailThread);
+		thread.start();
+		Thread thread2 = new Thread(emailThread);
+		thread2.start();
+		Thread thread3 = new Thread(emailThread);
+		thread3.start();
+
+
+		Thread pictureThread = new Thread(new PictureThread());
+		pictureThread.start();
+		Thread pictureThread2 = new Thread(new PictureThread());
+		pictureThread2.start();
+		Thread pictureThread3 = new Thread(new PictureThread());
+		pictureThread3.start();
 
 	}
 
